@@ -60,7 +60,7 @@ void addHead(Node *&head)
     ifstream in("reviews.txt");
     Node *temp = new Node;
 
-    if (!in.is_open())
+    if (!in.good())
         cout << "ERROR OPENING FILE\n";
     else
     {
@@ -109,14 +109,18 @@ void printAll(array<Movie, SIZE> arrMovies) // titles only for now
 
     for (int i = 0; i < SIZE; i++)
     {
-        cout << "Name of Movie #" << i << ": " << arrMovies[i].getTitle() << '\n'; // correctly working
+        cout << "Name of Movie #" << i+1 << ": " << arrMovies[i].getTitle() << '\n'; 
 
         current = arrMovies[i].getHead(); 
-        if (current)
+        for(int j = 0; j < COMMENTS; j++)
         {
-            cout << "Comment: " << arrMovies[i].getHead()->comment << '\n';
-            cout << "Rating: " << arrMovies[i].getHead()->rating << "\n\n";
+            if (current)
+            {
+                cout << "Comment: " << current->comment << '\n';
+                cout << "Rating: " << current->rating << "\n";
+            }
+            current = current->next; 
         }
-        current = current->next; //iterate
+        cout << '\n'; //formatting
     }
 }
