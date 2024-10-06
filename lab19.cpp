@@ -2,6 +2,8 @@
 // IDE used: Visual Studio Code
 #include <iostream>
 #include <fstream> // for file input/output
+#include <time.h>
+#include <cstdlib> 
 using namespace std;
 
 // struct
@@ -34,6 +36,11 @@ void averagePrintAll(Node *);
  ************************************************/
 int main()
 {
+    
+    srand(time(0)); //seed random 
+
+    array<Movie, 4>arrMovies = {};
+
     Node *head = nullptr;
     nodeLoop(head); // get user choice and loop based on it
 }
