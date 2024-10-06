@@ -22,7 +22,7 @@ public:
     Movie(): ptrHead(nullptr){} //constructor 
 
     string getTitle() const { return movieTitle; }
-    Node getHead() const { return *ptrHead; }
+    Node *getHead() { return ptrHead; } //return pointer
 
     void setTitle(string t) { movieTitle = t; }
     void setHead(Node *p) { ptrHead = p; }
@@ -32,13 +32,13 @@ private:
     Node *ptrHead;     // pointer to head of linked list containing reviews
 };
 
+// global
+const int SIZE = 4; // subject to change
+
 // function prototypes
 void addHead(Node *&);
 void averagePrintAll(Node *);
 void assignAll(array<Movie, SIZE> &arrMovies);
-
-// global
-const int SIZE = 4; // subject to change
 
 /************************************************
  * Function: Main
@@ -108,9 +108,10 @@ void assignAll(array<Movie, SIZE> &arrMovies) //pass by reference to reassign
     {
         //set titles for each object
         for (int i = 0; i < SIZE; i++)
-        {
-            cout << "Enter a name for the title of movie #" << i << ": ";
-            cin >> buf;
+        {   
+            cout << "Enter a name for the title of movie #" << i+1 << ": "; //i+1 so starts at 1 on userside
+            
+            getline(cin, buf);
             arrMovies[i].setTitle(buf);
         }
     }
