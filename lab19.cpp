@@ -19,10 +19,10 @@ struct Node
 class Movie
 {
 public:
-    Movie(): ptrHead(nullptr){} //constructor 
+    Movie() : ptrHead(nullptr) {} // constructor
 
     string getTitle() const { return movieTitle; }
-    Node *getHead() { return ptrHead; } //return pointer
+    Node *getHead() { return ptrHead; } // return pointer
 
     void setTitle(string t) { movieTitle = t; }
     void setHead(Node *p) { ptrHead = p; }
@@ -33,7 +33,7 @@ private:
 };
 
 // global
-const int SIZE = 4; // subject to change
+const int SIZE = 4, COMMENTS = 3; // subject to change
 
 // function prototypes
 void addHead(Node *&);
@@ -48,38 +48,35 @@ int main()
 
     srand(time(0)); // seed random
 
-    array<Movie, SIZE> arrMovies = {}; //array declaration
+    array<Movie, SIZE> arrMovies = {}; // array declaration
 
-    assignAll(arrMovies); 
+    assignAll(arrMovies);
 
-    // Node *head = nullptr; 
+    // Node *head = nullptr;
 }
 
 void addHead(Node *&head)
 {
-    double r = -1;
     string buf;
-    bool again;
+    ifstream in("reviews.txt");
 
-    Node *temp = new Node;
-
-    while (r < 0 || r > 5)
+    if (!in.is_open())
+        cout << "ERROR OPENING FILE\n";
+    else
     {
-        cout << "Enter review rating 0-5: ";
-        cin >> r;
-        if (r < 0 || r > 5)
-            cout << "Please enter a valid rating (0-5, decimals okay)\n";
+        Node *temp = new Node;
+
+        temp->rating = rand()%5; //whole number?
+
+        //assign comment to inputfile
+        getline(in, buf);
+        temp->comment = buf;
+
+        // assignment
+        temp->next = head; // have new node point where head was pointing
+        head = temp;       // have head point to next
     }
-    temp->rating = r;
-
-    cin.ignore(100, '\n'); // clear input before getline
-    cout << "Enter review comments: ";
-    getline(cin, buf);
-    temp->comment = buf;
-
-    // assignment
-    temp->next = head; // have new node point where head was pointing
-    head = temp;       // have head point to next
+    in.close();
 }
 
 void averagePrintAll(Node *head)
@@ -97,22 +94,25 @@ void averagePrintAll(Node *head)
     cout << "\t> Average: " << (avg / i) << '\n';
 }
 
-void assignAll(array<Movie, SIZE> &arrMovies) //pass by reference to reassign
+void assignAll(array<Movie, SIZE> &arrMovies) // pass by reference to reassign
 {
     string buf;
 
-    ifstream in("reviews.txt");
-    if (!in.is_open())
-        cout << "ERROR OPENING FILE\n";
-    else
+    // set titles for each object
+    for (int i = 0; i < SIZE; i++)
     {
-        //set titles for each object
-        for (int i = 0; i < SIZE; i++)
-        {   
-            cout << "Enter a name for the title of movie #" << i+1 << ": "; //i+1 so starts at 1 on userside
+        cout << "Enter a name for the title of movie #" << i + 1 << ": "; // i+1 so starts at 1 on userside
+
+        getline(cin, buf);
+        arrMovies[i].setTitle(buf);
+    }
+
+    // create linked list for each object
+    for (int i = 0; i < SIZE; i++) //for each object
+    {
+        for (int nodei = 0; nodei > COMMENTS; nodei++) //3 times per object
+        {
             
-            getline(cin, buf);
-            arrMovies[i].setTitle(buf);
         }
     }
 }
