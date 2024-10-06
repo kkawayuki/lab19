@@ -36,9 +36,10 @@ private:
 const int SIZE = 4, COMMENTS = 3; // subject to change
 
 // function prototypes
-void addHead(Node *&);
+Node addHead(Node *&);
 void averagePrintAll(Node *);
 void assignAll(array<Movie, SIZE> &arrMovies);
+void printAll(array<Movie, SIZE> arrMovies);
 
 /************************************************
  * Function: Main
@@ -51,20 +52,20 @@ int main()
     array<Movie, SIZE> arrMovies = {}; // array declaration
 
     assignAll(arrMovies);
-
+    printAll(arrMovies);
     // Node *head = nullptr;
 }
 
-void addHead(Node *&head)
+Node addHead(Node *&head)
 {
     string buf;
     ifstream in("reviews.txt");
+    Node *temp = new Node;
 
     if (!in.is_open())
         cout << "ERROR OPENING FILE\n";
     else
     {
-        Node *temp = new Node;
 
         temp->rating = rand()%5; //whole number?
 
@@ -77,6 +78,8 @@ void addHead(Node *&head)
         head = temp;       // have head point to next
     }
     in.close();
+
+    return(*temp); 
 }
 
 void averagePrintAll(Node *head)
@@ -110,9 +113,18 @@ void assignAll(array<Movie, SIZE> &arrMovies) // pass by reference to reassign
     // create linked list for each object
     for (int i = 0; i < SIZE; i++) //for each object
     {
-        for (int nodei = 0; nodei > COMMENTS; nodei++) //3 times per object
+        arrMovies[i].setHead(nullptr); //set each head's starting point as nullptr
+        for(int j= 0; j < COMMENTS; j++)
         {
-            
+            addHead();
         }
+    }
+}
+
+void printAll(array<Movie, SIZE> arrMovies)
+{
+    for (int i = 0; i < SIZE; i++)
+    {
+        cout << arrMovies[i].getTitle() << '\n'; //correctly working
     }
 }
