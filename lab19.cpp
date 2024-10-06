@@ -38,7 +38,6 @@ const int SIZE = 4, COMMENTS = 3; // subject to change
 
 // function prototypes
 void addHead(Node *&);
-void averagePrintAll(Node *);
 void assignAll(array<Movie, SIZE> &arrMovies);
 void printAll(array<Movie, SIZE> arrMovies);
 
@@ -47,14 +46,12 @@ void printAll(array<Movie, SIZE> arrMovies);
  ************************************************/
 int main()
 {
-
     srand(time(0)); // seed random
 
     array<Movie, SIZE> arrMovies = {}; // array declaration
 
     assignAll(arrMovies);
     printAll(arrMovies);
-    // Node *head = nullptr;
 }
 
 void addHead(Node *&head)
@@ -67,7 +64,6 @@ void addHead(Node *&head)
         cout << "ERROR OPENING FILE\n";
     else
     {
-
         temp->rating = rand() % 5; // whole number?
 
         // assign comment to inputfile
@@ -79,21 +75,6 @@ void addHead(Node *&head)
         head = temp;       // have head point to next
     }
     // in.close(); //maybe have do at end
-}
-
-void averagePrintAll(Node *head)
-{
-    double avg;
-    int i = 0;
-
-    while (head) // while head not nullptr
-    {
-        cout << "\t> Review #" << i + 1 << ": " << head->rating << ": " << head->comment << '\n'; // i+1 for formatting, starts at 1 in output
-        avg += head->rating;
-        head = head->next; // go to next element in linked list
-        i++;               // increment
-    }
-    cout << "\t> Average: " << (avg / i) << '\n';
 }
 
 void assignAll(array<Movie, SIZE> &arrMovies) // pass by reference to reassign
@@ -124,25 +105,18 @@ void printAll(array<Movie, SIZE> arrMovies) // titles only for now
 {
     Node *current = new Node; // pointer for iteration
 
+    cout << '\n'; //formatting
+
     for (int i = 0; i < SIZE; i++)
     {
-        cout << arrMovies[i].getTitle() << '\n'; // correctly working
+        cout << "Name of Movie #" << i << ": " << arrMovies[i].getTitle() << '\n'; // correctly working
 
-        if (arrMovies[i].getHead())
+        current = arrMovies[i].getHead(); 
+        if (current)
         {
             cout << "Comment: " << arrMovies[i].getHead()->comment << '\n';
-            cout << "Rating: " << arrMovies[i].getHead()->rating << '\n';
+            cout << "Rating: " << arrMovies[i].getHead()->rating << "\n\n";
         }
+        current = current->next; //iterate
     }
-}
-
-// from 18
-int i = 0;
-
-while (head) // while head not nullptr
-{
-    cout << "\t> Review #" << i + 1 << ": " << head->rating << ": " << head->comment << '\n'; // i+1 for formatting, starts at 1 in output
-    avg += head->rating;
-    head = head->next; // go to next element in linked list
-    i++;               // increment
 }
