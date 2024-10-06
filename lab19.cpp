@@ -5,6 +5,7 @@
 #include <time.h>
 #include <cstdlib>
 #include <array>
+#include <iomanip>
 using namespace std;
 
 // struct
@@ -56,6 +57,7 @@ int main()
 
 void addHead(Node *&head)
 {
+    static int lines = 0;
     string buf;
     ifstream in("reviews.txt");
     Node *temp = new Node;
@@ -64,15 +66,20 @@ void addHead(Node *&head)
         cout << "ERROR OPENING FILE\n";
     else
     {
-        temp->rating = rand() % 5; // whole number?
+        temp->rating = ((rand() % 41) / 10.0) + 1; // division by 10.0 for implicit double conversion
 
         // assign comment to inputfile
-        getline(in, buf);
-        temp->comment = buf;
+        for (int i = 0; i < lines; i++)
+            in.ignore(100,'\n');
+            
+        getline(in, temp->comment);
+         
 
         // assignment
         temp->next = head; // have new node point where head was pointing
         head = temp;       // have head point to next
+
+        lines++; // increment static so number of lines to ignore is remembered
     }
     // in.close(); //maybe have do at end
 }
@@ -105,22 +112,22 @@ void printAll(array<Movie, SIZE> arrMovies) // titles only for now
 {
     Node *current = new Node; // pointer for iteration
 
-    cout << '\n'; //formatting
+    cout << '\n'; // formatting
 
     for (int i = 0; i < SIZE; i++)
     {
-        cout << "Name of Movie #" << i+1 << ": " << arrMovies[i].getTitle() << '\n'; 
+        cout << "Name of Movie #" << i + 1 << ": " << arrMovies[i].getTitle() << '\n';
 
-        current = arrMovies[i].getHead(); 
-        for(int j = 0; j < COMMENTS; j++)
+        current = arrMovies[i].getHead();
+        for (int j = 0; j < COMMENTS; j++)
         {
             if (current)
             {
+                cout << "Rating: " << fixed << setprecision(1) << current->rating << "\n"; // fixed ensures whole numbers also show .0
                 cout << "Comment: " << current->comment << '\n';
-                cout << "Rating: " << current->rating << "\n";
             }
-            current = current->next; 
+            current = current->next;
         }
-        cout << '\n'; //formatting
+        cout << '\n'; // formatting
     }
 }
