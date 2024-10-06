@@ -23,6 +23,7 @@ public:
 
     string getTitle() const { return movieTitle; }
     Node *getHead() { return ptrHead; } // return pointer
+    Node *&modifyHead() { return ptrHead; }
 
     void setTitle(string t) { movieTitle = t; }
     void setHead(Node *p) { ptrHead = p; }
@@ -36,7 +37,7 @@ private:
 const int SIZE = 4, COMMENTS = 3; // subject to change
 
 // function prototypes
-Node addHead(Node *&);
+void addHead(Node *&);
 void averagePrintAll(Node *);
 void assignAll(array<Movie, SIZE> &arrMovies);
 void printAll(array<Movie, SIZE> arrMovies);
@@ -56,7 +57,7 @@ int main()
     // Node *head = nullptr;
 }
 
-Node addHead(Node *&head)
+void addHead(Node *&head)
 {
     string buf;
     ifstream in("reviews.txt");
@@ -67,9 +68,9 @@ Node addHead(Node *&head)
     else
     {
 
-        temp->rating = rand()%5; //whole number?
+        temp->rating = rand() % 5; // whole number?
 
-        //assign comment to inputfile
+        // assign comment to inputfile
         getline(in, buf);
         temp->comment = buf;
 
@@ -77,9 +78,7 @@ Node addHead(Node *&head)
         temp->next = head; // have new node point where head was pointing
         head = temp;       // have head point to next
     }
-    in.close();
-
-    return(*temp); 
+    // in.close(); //maybe have do at end
 }
 
 void averagePrintAll(Node *head)
@@ -111,20 +110,39 @@ void assignAll(array<Movie, SIZE> &arrMovies) // pass by reference to reassign
     }
 
     // create linked list for each object
-    for (int i = 0; i < SIZE; i++) //for each object
+    for (int i = 0; i < SIZE; i++) // for each object
     {
-        arrMovies[i].setHead(nullptr); //set each head's starting point as nullptr
-        for(int j= 0; j < COMMENTS; j++)
+        arrMovies[i].setHead(nullptr); // set each head's starting point as nullptr
+        for (int j = 0; j < COMMENTS; j++)
         {
-            addHead();
+            addHead(arrMovies[i].modifyHead());
         }
     }
 }
 
-void printAll(array<Movie, SIZE> arrMovies)
+void printAll(array<Movie, SIZE> arrMovies) // titles only for now
 {
+    Node *current = new Node; // pointer for iteration
+
     for (int i = 0; i < SIZE; i++)
     {
-        cout << arrMovies[i].getTitle() << '\n'; //correctly working
+        cout << arrMovies[i].getTitle() << '\n'; // correctly working
+
+        if (arrMovies[i].getHead())
+        {
+            cout << "Comment: " << arrMovies[i].getHead()->comment << '\n';
+            cout << "Rating: " << arrMovies[i].getHead()->rating << '\n';
+        }
     }
+}
+
+// from 18
+int i = 0;
+
+while (head) // while head not nullptr
+{
+    cout << "\t> Review #" << i + 1 << ": " << head->rating << ": " << head->comment << '\n'; // i+1 for formatting, starts at 1 in output
+    avg += head->rating;
+    head = head->next; // go to next element in linked list
+    i++;               // increment
 }
