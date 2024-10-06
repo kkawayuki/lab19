@@ -4,6 +4,7 @@
 #include <fstream> // for file input/output
 #include <time.h>
 #include <cstdlib> 
+#include <array>
 using namespace std;
 
 // struct
@@ -19,6 +20,10 @@ class Movie
 {
 public:
     string getTitle() const {return movieTitle;}
+    Node getHead() const {return *ptrHead;}
+
+    void setTitle(string t) {movieTitle = t;}
+    void setHead(Node *p) {*ptrHead = p;}
     
 private:
     string movieTitle; //title
@@ -26,10 +31,12 @@ private:
 };
 
 // function prototypes
-void nodeLoop(Node *&); // menu-driven program loop to assign nodes based on mode
 void addHead(Node *&);
-bool promptRepeat(); // checks if user wants to go again.
 void averagePrintAll(Node *);
+void assignAll(array<Movie, SIZE>arrMovies);
+
+//global
+const int SIZE = 4; //subject to change
 
 /************************************************
  * Function: Main
@@ -39,22 +46,10 @@ int main()
     
     srand(time(0)); //seed random 
 
-    array<Movie, 4>arrMovies = {};
+    array<Movie, SIZE>arrMovies = {};
 
     Node *head = nullptr;
-    nodeLoop(head); // get user choice and loop based on it
-}
-
-
-void nodeLoop(Node *&head) 
-{
-    do
-    {
-        addHead(head); 
-    } 
-    while (promptRepeat()); 
-
-    averagePrintAll(head); // output all at end
+    
 }
 
 void addHead(Node *&head) 
@@ -84,31 +79,6 @@ void addHead(Node *&head)
     head = temp;       // have head point to next
 }
 
-bool promptRepeat()
-{
-    string buf;
-
-    while (true)
-    {
-        cout << "Enter another review? Y/N: ";
-        cin >> buf;
-        if (tolower(buf[0]) == 'y')
-        {
-            return (true);
-            break;
-        }
-        else if (tolower(buf[0]) == 'n')
-        {
-            return (false);
-            break;
-        }
-        else
-        {
-            cout << "Please enter a valid response, (Y/N).\n";
-        }
-    }
-}
-
 void averagePrintAll(Node *head)
 {
     double avg;
@@ -122,4 +92,12 @@ void averagePrintAll(Node *head)
         i++;               // increment
     }
     cout << "\t> Average: " << (avg / i) << '\n';
+}
+
+void assignAll(array<Movie, SIZE>arrMovies)
+{
+    for(int i = 0; i < SIZE; i++)
+    {
+        arrMovies[i].
+    }
 }
