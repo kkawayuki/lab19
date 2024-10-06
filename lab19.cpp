@@ -3,7 +3,7 @@
 #include <iostream>
 #include <fstream> // for file input/output
 #include <time.h>
-#include <cstdlib> 
+#include <cstdlib>
 #include <array>
 using namespace std;
 
@@ -15,44 +15,47 @@ struct Node
     Node *next; // pointer to next node in LL
 };
 
-//class
+// class
 class Movie
 {
 public:
-    string getTitle() const {return movieTitle;}
-    Node getHead() const {return *ptrHead;}
+    Movie(): ptrHead(nullptr){} //constructor 
 
-    void setTitle(string t) {movieTitle = t;}
-    void setHead(Node *p) {*ptrHead = p;}
-    
+    string getTitle() const { return movieTitle; }
+    Node getHead() const { return *ptrHead; }
+
+    void setTitle(string t) { movieTitle = t; }
+    void setHead(Node *p) { ptrHead = p; }
+
 private:
-    string movieTitle; //title
-    Node *ptrHead; //pointer to head of linked list containing reviews
+    string movieTitle; // title
+    Node *ptrHead;     // pointer to head of linked list containing reviews
 };
 
 // function prototypes
 void addHead(Node *&);
 void averagePrintAll(Node *);
-void assignAll(array<Movie, SIZE>arrMovies);
+void assignAll(array<Movie, SIZE> &arrMovies);
 
-//global
-const int SIZE = 4; //subject to change
+// global
+const int SIZE = 4; // subject to change
 
 /************************************************
  * Function: Main
  ************************************************/
 int main()
 {
-    
-    srand(time(0)); //seed random 
 
-    array<Movie, SIZE>arrMovies = {};
+    srand(time(0)); // seed random
 
-    Node *head = nullptr;
-    
+    array<Movie, SIZE> arrMovies = {}; //array declaration
+
+    assignAll(arrMovies); 
+
+    // Node *head = nullptr; 
 }
 
-void addHead(Node *&head) 
+void addHead(Node *&head)
 {
     double r = -1;
     string buf;
@@ -94,10 +97,21 @@ void averagePrintAll(Node *head)
     cout << "\t> Average: " << (avg / i) << '\n';
 }
 
-void assignAll(array<Movie, SIZE>arrMovies)
+void assignAll(array<Movie, SIZE> &arrMovies) //pass by reference to reassign
 {
-    for(int i = 0; i < SIZE; i++)
+    string buf;
+
+    ifstream in("reviews.txt");
+    if (!in.is_open())
+        cout << "ERROR OPENING FILE\n";
+    else
     {
-        arrMovies[i].
+        //set titles for each object
+        for (int i = 0; i < SIZE; i++)
+        {
+            cout << "Enter a name for the title of movie #" << i << ": ";
+            cin >> buf;
+            arrMovies[i].setTitle(buf);
+        }
     }
 }
